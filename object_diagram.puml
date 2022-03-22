@@ -1,0 +1,22 @@
+@startuml
+abstract class Connection{
+	{abstract} + string  recibeMensajes();
+	{abstract} + void sendMessage(string message);
+}
+
+class Client
+class Server
+class Message
+class InformationMessage
+
+
+class Game
+class Player
+class Cards
+class MatrixMemory
+
+class GUI
+
+Connection <|-- Client
+Connection <|-- Server
+@enduml
