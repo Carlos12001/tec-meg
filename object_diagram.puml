@@ -1,11 +1,26 @@
 @startuml
-abstract class Connection{
-	{abstract} + string  recibeMensajes();
-	{abstract} + void sendMessage(string message);
+class InitProgram{
+    + void start();
 }
 
 class Client
 class Server
+
+enum TypeConnection{
+    SERVER
+    CLIENT
+}
+abstract class Connection{
+	{abstract} + string  receiveMessage();
+	{abstract} + void sendMessage(string message);
+}
+
+class ConnectionServer{
+}
+class ConnectionClient{
+}
+
+
 class Message
 class InformationMessage
 
@@ -15,8 +30,13 @@ class Player
 class Cards
 class MatrixMemory
 
-class GUI
+class GUIServer
+class GUIGame
 
-Connection <|-- Client
-Connection <|-- Server
+InitProgram -- Client : > create
+InitProgram -- Server : > create
+
+Connection <-- ConnectionServer
+Connection <-- ConnectionClient
+
 @enduml
