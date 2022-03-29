@@ -5,18 +5,41 @@ public:
     static void start(){
         return;
     }
+    static void testConnection(){
+        cout << "Welcome to testConnection" << endl;
+        int input = 0;
+        string a;
+        cin >> a;
+        input = stoi(a);
+        if(input==0) {
+            cout << "Test Server" << endl;
+            InitProgram::testServerConnection();
+        }
+        else{
+            cout << "Test Client" << endl;
+            InitProgram::testClientConnection();
+        }
+    }
     static void testServerConnection(){
-        auto serverConnection = new ServerConnection;
-        serverConnection->initConnection();
-        cout << serverConnection->getMessage() << endl;
-        serverConnection->sendMessage("I got your message");
-        delete serverConnection;
+        auto connection = new ServerConnection;
+        connection->initConnection();
+        cout << connection->getMessage() << endl;
+        connection->sendMessage("I got your message");
+        delete connection;
+        return;
+    };
+
+    static void testClientConnection(){
+        auto connection = new ClientConnection;
+        connection->sendMessage("I got your message");
+        connection->initConnection();
+        cout << connection->getMessage() << endl;
+        delete connection;
         return;
     };
 
 };
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    InitProgram::testConnection();
 }

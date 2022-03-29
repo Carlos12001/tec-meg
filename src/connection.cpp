@@ -79,14 +79,16 @@ void ServerConnection::initConnection() {
         error("ERROR on accept");
     }else{
         cout << "Information: The connection was successful." << endl;
+        this->inited = true;
     }
     return;
 }
 
 string ServerConnection::getMessage() {
     //    Set buffer in 0.
-    bzero(this->buffer,256);
-    this->numberCharactersIO = read(this->newSocketOutput,this->buffer, 255);
+    char buffer[256];
+    bzero(buffer,256);
+    this->numberCharactersIO = read(this->newSocketOutput,buffer, 255);
     if (numberCharactersIO < 0) {
         error("ERROR reading from socket");
     }
@@ -94,6 +96,9 @@ string ServerConnection::getMessage() {
 }
 
 void ServerConnection::sendMessage(string message) {
+    //    Set buffer in 0.
+    char buffer[256];
+    bzero(buffer,256);
     this->numberCharactersIO = write(this->newSocketOutput,"I got your message",18);
     if (this->numberCharactersIO < 0) {
         error("ERROR writing to socket");
@@ -105,16 +110,72 @@ ServerConnection::~ServerConnection() {
     close(this->newSocketOutput);
 }
 
-ClientConnection::ClientConnection() : Connection(TypeConnection::CLIENT) {}
-
-string ClientConnection::getMessage() {
-    return "";
-}
-
-void ClientConnection::sendMessage(string message) {
-
+ClientConnection::ClientConnection() : Connection(TypeConnection::CLIENT) {
+    this->setIpHost("localhost");
 }
 
 void ClientConnection::initConnection() {
+    //    Check is the was inited before.
+    if(this->inited) {
+        this->error("The socket was previous initialed");
+        return;
+    }
 
+//    Create the socket.
+    this->socketOutput = socket(AF_INET, SOCK_STREAM, 0);
+//    Check is the socket was open successful.
+    if (this->socketOutput < 0)
+        error("ERROR opening socket");
+    this->serverHost = gethostbyname(this->ipHost);
+    if (this->serverHost == NULL) {
+        fprintf(stderr,"ERROR, no such host\n");
+        exit(0);
+    }
+
+    bzero((char *) &(this->serverAddress), sizeof(this->serverAddress));
+
+    (this->serverAddress).sin_family = AF_INET;
+
+    bcopy((char *)(this->serverHost)->h_addr,
+          (char *)&(this->serverAddress).sin_addr.s_addr,
+          (this->serverHost)->h_length);
+
+    (this->serverAddress).sin_port = htons(this->portNumber);
+
+    if (connect((this->socketOutput),(struct sockaddr *) &(this->serverAddress),
+            sizeof(this->serverAddress)) < 0)
+        error("ERROR connecting");
+
+    return;
+}
+
+string ClientConnection::getMessage() {
+    //    Set buffer in 0.
+    char buffer[256];
+    bzero(buffer,256);
+    numberCharactersIO = read(socketOutput,buffer,255);
+    if (numberCharactersIO < 0)
+        error("ERROR reading from socket");
+    printf("%s\n",buffer);
+    return string (buffer);
+}
+
+void ClientConnection::sendMessage(string message) {
+    //    Set buffer in 0.
+    char buffer[256];
+    printf("Please enter the message: ");
+    bzero(buffer,256);
+    fgets(buffer,255,stdin);
+    numberCharactersIO = write(socketOutput,buffer,strlen(buffer));
+    if (numberCharactersIO < 0)
+        error("ERROR writing to socket");
+    return;
+}
+
+void ClientConnection::setPortNumber(const int portNumber) {
+    this->portNumber = portNumber;
+}
+
+void ClientConnection::setIpHost(const string ipString) {
+    this->ipHost = const_cast<char *>(ipString.c_str());
 }

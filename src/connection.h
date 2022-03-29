@@ -35,8 +35,6 @@ protected:
 
     int numberCharactersIO{};
 
-    char buffer [256]{};
-
     sockaddr_in serverAddress{};
 
     static void error(const string& message);
@@ -78,8 +76,14 @@ class ClientConnection: public Connection{
 protected:
 
     hostent* serverHost = nullptr;
+
+    char* ipHost;
 public:
     ClientConnection();
+
+    void setPortNumber(const int portNumber);
+
+    void setIpHost(const string host);
 
     void initConnection() override;
 
