@@ -14,7 +14,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Tell cmake to find the modules Qt5Widgets
 find_package(Qt5Widgets REQUIRED)
 
-file(GLOB_RECURSE SOURCE_FILES "${SOURCE_DIR}/*.cpp" "${SOURCE_DIR}/*.h")
+file(GLOB SOURCE_FILES "./*.cpp" "./*.h")
 add_executable("${CMAKE_PROJECT_NAME}" "${SOURCE_FILES}")
 
 # Link the library to the executable
