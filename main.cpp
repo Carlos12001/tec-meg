@@ -1,8 +1,9 @@
 #include <iostream>
 #include "connection.h"
 #include "mainwindow.h"
+#include "utilies.h"
 #include <QApplication>
-
+using namespace std;
 class InitProgram {
 public:
     static void start() {
@@ -11,11 +12,9 @@ public:
 
     static void testConnection() {
         cout << "Welcome to testConnection" << endl;
-        int input = 0;
-        string a;
-        cin >> a;
-        input = stoi(a);
-        if (input == 0) {
+        cout << "0 for server or ay number for client" << endl;
+        int inputNumber = Utilies::inputStringToInt();
+        if (inputNumber == 0) {
             cout << "Test Server" << endl;
             InitProgram::testServerConnection();
         } else {
@@ -52,4 +51,5 @@ public:
 
 int main(int argc, char *argv[]){
     InitProgram::initGUITest(argc, argv);
+    return 0;
 }
