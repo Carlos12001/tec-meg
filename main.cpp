@@ -42,7 +42,7 @@ public:
 
     static int initGUITest(int argc, char *argv[]){
         QApplication a(argc, argv);
-        mainWindow w;
+        MainWindow w;
         w.show();
         return a.exec();
 
