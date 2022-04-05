@@ -26,7 +26,7 @@ public:
     QTime time;
     QMessageBox messageBox;
     QVector<QString> vectorCards;
-    QHash<QString, string> hashCards;
+    QHash<QString, QString> hashCards;
     int unCompleteCouple = 0;
     int points = 0;
 
@@ -45,3 +45,4 @@ private:
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
+

@@ -3,40 +3,106 @@ class InitProgram{
     + void start();
 }
 
-class Client
-class Server
-
 enum TypeConnection{
     SERVER
     CLIENT
 }
 abstract class Connection{
+    + const TypeConnection type;
+    + bool inited = false;
 	{abstract} + string  receiveMessage();
-	{abstract} + void sendMessage(string message);
+	{abstract} + void sendMessage(string);
 }
 
 class ConnectionServer{
+    + ServerConnection();
+    + void initConnection() override;
+    + string getMessage() override;
+    + void sendMessage(string) override;
+    + ~ServerConnection();
 }
 class ConnectionClient{
+    + ClientConnection();
+    + void setPortNumber(const int);
+    + void setIpHost(const string);
+    + void initConnection() override;
+    + string getMessage() override;
+    + void sendMessage(string message) override;
 }
 
 
-class Message
-class InformationMessage
+class InformationMessage{
+    + string getInfo();
+    + void setInfo(const Info);
+}
 
 
-class Game
-class Player
-class Cards
-class MatrixMemory
+class Game{
+    + Player player1;
+    + Player player2;
+    + void initGame();
+    - void updateState();
+    - void updateTimer();
+    - void defineFinalResult();
+    - void showCard(QPushButton*&);
+    - void mixCards();
+    - void distributeCards();
+}
+class Player{
+    + string name;
+    + int points;
+    + bool myTurn = false;
+}
+class Card{
+    + string id;
+    + int positionI;
+    + int positionJ;
+    + string image;
+}
+class MatrixMemory{
+    - List<string> ram;
+    - List<Card> disk;
+    + Card getCard(int, int);
+    - Card replaceCard();
+    + string getMemoryState();
+}
 
-class GUIServer
-class GUIGame
+class Server{
+    - Game game;
+    - ConnectionServer connection;
+    - MatrixMemory;
+    + void updateState();
+    + void initGame();
+}
+class MainWindow{
+    - ConnectionClient connection;
+    - Message message;
+    - InformationMessage;
+    + void initGame();
+    - void updateState();
+    - void updateTimer();
+    - void defineFinalResult();
+    - void scopeEventClick();
+    - void showCard(QPushButton*&);
+    - void mixCards();
+    - void distributeCards();
+}
 
-InitProgram -- Client : > create
-InitProgram -- Server : > create
+InitProgram "1"  o-- "1" MainWindow : > create
+InitProgram "1" o-- "1" Server : > create
 
-Connection <-- ConnectionServer
-Connection <-- ConnectionClient
+Connection <-- ConnectionServer : > inherit
+Connection <-- ConnectionClient: > inherit
+Connection *-- TypeConnection : > have
 
+MatrixMemory "1" o-- "30...60" Card : > have
+Game "1" *-- "2" Player : > have
+
+Server "1" o-- "1" InformationMessage : saveInformation
+Server "1" *-- "1" ConnectionServer : > use
+Server "1" *-- "1" Game : > use
+Server "1" *-- "1" MatrixMemory : > use
+
+MainWindow "1" *-- "1" ConnectionClient: > use
 @enduml
+#//www.plantuml.com/plantuml/png/nPLVRzem4C2VbqzXyJ016rNRINiONLKDiOsfhLYBjcUJNC5gR2FxGejGzzbdOnokJjQtRRoGtFry_y-viCWDLhBCyf9RooPAuDJeXU5ocp7tUyFMMXHiXtLxm-mfoq1LaiqsAnXffI17eLLWRyStFyOtkyVHvMHyFNCqdriqF4SMxDCZmNokbSN474FtEjm3SwrB9fH0ADX7TiTBwrIljj7maqFSar0BnWpa8DPm1TRo1NHxAHTI0LL48XmCQQK1te9PWubXXhU3rXidzV7nKINJZZQYY5d441U0qNV2l11U0_pL5irJ8uDHAK1Xp22yqJE9NvngWzULd8FfXgu8XGreilggBGPWdzM_AmMJuPKSyAshX_TE6yczs_snRSEbPngP1sb8oJ_sgDKlNDPsfYNVW66htT_9i4rwsYY6Dn1T3eAuMXKSuHOvjcjcGe99D0NS2GMVXUBb3TYgn4Hlb_fXn4tH_JwjxF9JXQXL__LpHef7ZzZKjF05cbS8GKkcAUIMr55nMNTAA6GhBHJQPmihDxFAgCF2HdlUGM9D5CzjMU4xE6aJVXicHoLV4EDNt8aVhq1gizdk4xmK5iy2ViuCbqCgzz6S-_Jles4lyNEogwHG-9OimI1e3RXEvx0ZUisX3kv3R-dDGk-JmMwgsAAkuw1nyR2y5aI4fXVzjenJ-_pHAWdrKwX2FyHWqYkZpNTOgBY0KTnSkVys_hbUmNWD2bqE-VrVNewCV2XPvwJ3c1uC_0EfBll0pbbkW2Cqy4Y7NbCo8v_1im7j3M65Me8HcB9f7_-0zXsQV70zkUHhvvuEsI7KTyT7HqVlZpjX0shQztO7zJrqsebNuS5S29hct38pZhUE9WfwhX_EjLUYij36-i1UqjCiQouZlQDmiwo1lm1LLBBy3G00
