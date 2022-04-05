@@ -41,10 +41,10 @@ public:
     };
 
     static int initGUITest(int argc, char *argv[]){
-        QApplication a(argc, argv);
+        QApplication app =  QApplication(argc, argv);
         MainWindow w;
         w.show();
-        return a.exec();
+        return app.exec();
 
     }
 };
