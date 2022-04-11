@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 #include <string.h>
+#include <random>
 #include <QMainWindow>
 #include <QTimer>
 #include <QTime>
@@ -29,6 +30,9 @@ public:
     QHash<QString, QString> hashCards;
     int unCompleteCouple = 0;
     int points = 0;
+    bool inGame = false;
+    QPushButton* previousCard;
+    QPushButton* actualCard;
 
 public slots:
     void initGame();
@@ -36,10 +40,13 @@ private slots:
     void updateState();
     void updateTimer();
     void defineFinalResult();
+    void defineMiddleResult();
     void scopeEventClick();
-    void showCard(QPushButton*& buttonPushed);
+    void showCard();
     void mixCards();
     void distributeCards();
+    void showImage();
+    void rebootCards();
 
 private:
     Ui::MainWindow *ui;
