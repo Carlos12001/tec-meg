@@ -31,7 +31,7 @@ protected:
 
     int socketOutput{};
 
-    int portNumber{};
+    int portNumber = 8080;
 
     int numberCharactersIO{};
 
@@ -49,6 +49,8 @@ public:
     virtual void sendMessage(string message) = 0;
 
     virtual ~Connection();
+
+    void setPortNumber(const int number);
 };
 
 class ServerConnection: public Connection{
@@ -81,9 +83,7 @@ protected:
 public:
     ClientConnection();
 
-    void setPortNumber(const int portNumber);
-
-    void setIpHost(const string host);
+    void setIpHost(string host);
 
     void initConnection() override;
 

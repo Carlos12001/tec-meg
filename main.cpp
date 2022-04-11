@@ -1,7 +1,7 @@
 #include <iostream>
 #include "connection.h"
 #include "mainwindow.h"
-#include "utilies.h"
+#include "utilities.h"
 #include <QApplication>
 using namespace std;
 class InitProgram {
@@ -12,8 +12,8 @@ public:
 
     static void testConnection() {
         cout << "Welcome to testConnection" << endl;
-        cout << "0 for server or ay number for client" << endl;
-        int inputNumber = Utilies::inputStringToInt();
+        cout << " \"0\" for server or any number for client" << endl;
+        int inputNumber = Utilities::inputStringToInt();
         if (inputNumber == 0) {
             cout << "Test Server" << endl;
             InitProgram::testServerConnection();
@@ -25,17 +25,34 @@ public:
 
     static void testServerConnection() {
         auto connection = new ServerConnection;
+
+        cout << "Please enter a number for the port: " << endl;
+        int number =  Utilities::inputStringToInt();
+        connection->setPortNumber(number);
+
         connection->initConnection();
-        cout << connection->getMessage() << endl;
+
+        cout << connection-> getMessage() << endl;
+
         connection->sendMessage("I got your message");
+
         delete connection;
         return;
     }
     static void testClientConnection(){
         auto connection = new ClientConnection;
-        connection->sendMessage("I got your message");
+
+        cout << "Please enter a number for the port: " << endl;
+        int number =  Utilities::inputStringToInt();
+        connection->setPortNumber(number);
+
+
         connection->initConnection();
+
+        connection->sendMessage("");
+
         cout << connection->getMessage() << endl;
+
         delete connection;
         return;
     };
@@ -45,11 +62,10 @@ public:
         MainWindow w;
         w.show();
         return app.exec();
-
     }
 };
 
 int main(int argc, char *argv[]){
-    InitProgram::initGUITest(argc, argv);
+    InitProgram::testConnection();
     return 0;
 }

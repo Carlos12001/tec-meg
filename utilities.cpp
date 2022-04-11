@@ -1,7 +1,7 @@
-#include "utilies.h"
+#include "utilities.h"
 #include "iostream"
 using namespace std;
-int Utilies::inputStringToInt() {
+int Utilities::inputStringToInt() {
     int inputNumber, errorCounter = 0;
     string inputString;
     while (true){

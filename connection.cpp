@@ -1,18 +1,6 @@
 //
-// Created by carlo on 3/27/22.
-//
 
-//Default include.
 #include "connection.h"
-#include "iostream"
-#include <cstring>
-using namespace std;
-//Includes for the client and server connection.
-#include <sys/socket.h>
-#include <unistd.h>
-#include <netinet/in.h>
-//Include for the client.
-//#include <netdb.h>
 
 
 Connection::Connection(TypeConnection type) : type(type) {}
@@ -24,6 +12,10 @@ void Connection::error(const string& message) {
 Connection::~Connection() {
     close(this->socketOutput);
 };
+
+void Connection::setPortNumber(const int number) {
+    this->portNumber = number;
+}
 
 ServerConnection::ServerConnection() : Connection(TypeConnection::SERVER) {}
 
@@ -43,29 +35,26 @@ void ServerConnection::initConnection() {
     }
 //    Set buffer of the serverAddress in 0.
     bzero((char *)&this->serverAddress, sizeof(this->serverAddress));
+
 //    Set the values of the serverAddress.
     (this->serverAddress).sin_family = AF_INET;
     (this->serverAddress).sin_addr.s_addr = INADDR_ANY;
     (this->serverAddress).sin_port = htons(this->portNumber);
+
 //    Bind the socket to address.
 //    For a server socket on the Internet,
 //    an address consists of a port number on the host machine.
-    while (true){
-        int bindOutput = bind(this->socketOutput, (struct sockaddr *) &(this->serverAddress),
-                              sizeof(this->serverAddress));
-        if ( bindOutput < 0) {
-            this->portNumber++;
-            this->error(string("ERROR on binding: new port set in: ")
-                                + to_string(this->portNumber));
-        }
-        else if (9000 < portNumber){
-            this->error("ERROR on binding: We try more 20 different ports");
-            exit(1);
-        }
-        else{
-            break;
-        }
+    int bindOutput = bind(this->socketOutput, (struct sockaddr *) &(this->serverAddress),
+                          sizeof(this->serverAddress));
+    if ( bindOutput < 0) {
+        this->portNumber++;
+        this->error(string("ERROR on binding: new port set in: ")
+                            + to_string(this->portNumber));
     }
+    else{
+        cout << "The port was created successful the port number is: " << portNumber << endl;
+    }
+
 //    Waiting the client.
     cout << "Information: The server connection is waiting the client." << endl;
     listen(socketOutput, 5);
@@ -145,6 +134,8 @@ void ClientConnection::initConnection() {
     if (connect((this->socketOutput),(struct sockaddr *) &(this->serverAddress),
             sizeof(this->serverAddress)) < 0)
         error("ERROR connecting");
+    else
+        cout << "Information: The connection with server was successful" << endl;
 
     return;
 }
@@ -170,10 +161,6 @@ void ClientConnection::sendMessage(string message) {
     if (numberCharactersIO < 0)
         error("ERROR writing to socket");
     return;
-}
-
-void ClientConnection::setPortNumber(const int portNumber) {
-    this->portNumber = portNumber;
 }
 
 void ClientConnection::setIpHost(const string ipString) {
