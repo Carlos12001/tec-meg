@@ -63,15 +63,15 @@ string ServerConnection::getMessage() {
     bzero(buffer,n);
     numberCharactersIO = read(newSocketOutput, buffer, n-1);
     if (numberCharactersIO < 0) error("ERROR reading from socket");
-    cout << "Here is the message: " << buffer << endl;
-    return "Message Complete";
+    return string (buffer);
 }
 
 void ServerConnection::sendMessage(string message) {
-    int n = 256;
+    int n = message.length() + 1;
     char buffer[n];
     bzero(buffer,n);
-    numberCharactersIO = write(newSocketOutput, "I got your message", 18);
+    strcpy(buffer, message.c_str());
+    numberCharactersIO = write(newSocketOutput, buffer, strlen(buffer));
     if (numberCharactersIO < 0) error("ERROR writing to socket");
     return;
 }
@@ -121,15 +121,14 @@ string ClientConnection::getMessage() {
     numberCharactersIO = read(socketOutput, buffer, 255);
     if (numberCharactersIO < 0)
         error("ERROR reading from socket");
-    cout << "Here is the message: " << buffer << endl;
-    return "Message Complete";
+    return string (buffer);
 }
 
 void ClientConnection::sendMessage(string message) {
     int n = message.length() + 1;
     char buffer[n];
     bzero(buffer,n);
-    fgets(buffer,255,stdin);
+    strcpy(buffer, message.c_str());
     numberCharactersIO = write(socketOutput, buffer, strlen(buffer));
     if (numberCharactersIO < 0)
         error("ERROR writing to socket");

@@ -34,7 +34,7 @@ public:
 
         cout << connection-> getMessage() << endl;
 
-        connection->sendMessage("I got your message");
+        connection->sendMessage("Hi, by the server.");
 
         delete connection;
         return;
@@ -50,7 +50,7 @@ public:
 
         connection->initConnection();
 
-        connection->sendMessage("");
+        connection->sendMessage("Hi!!, I'm the NEW client.");
 
         cout << connection->getMessage() << endl;
 
