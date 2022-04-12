@@ -39,6 +39,7 @@ public:
         delete connection;
         return;
     }
+
     static void testClientConnection(){
         auto connection = new ClientConnection;
 
@@ -55,7 +56,7 @@ public:
 
         delete connection;
         return;
-    };
+    }
 
     static int initGUITest(int argc, char *argv[]){
         QApplication app =  QApplication(argc, argv);
