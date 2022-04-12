@@ -35,7 +35,7 @@ protected:
 
     int numberCharactersIO{};
 
-    sockaddr_in serverAddress{};
+    struct sockaddr_in serverAddress{};
 
     static void error(const string& message);
 public:
@@ -60,7 +60,7 @@ protected:
 
     socklen_t clientAddressSize;
 
-    sockaddr_in clientAddress;
+    struct sockaddr_in clientAddress;
 public:
 
     ServerConnection();
@@ -77,9 +77,9 @@ public:
 class ClientConnection: public Connection{
 protected:
 
-    hostent* serverHost = nullptr;
+    struct hostent* serverHost = nullptr;
 
-    char* ipHost;
+    const char* ipHost = "localhost";
 public:
     ClientConnection();
 
