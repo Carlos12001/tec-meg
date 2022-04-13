@@ -1,11 +1,11 @@
 <RCC>
     <qresource prefix="/images">
-        <file>00.png</file>
-        <file>01.png</file>
-        <file>02.png</file>
-        <file>03.png</file>
-        <file>04.png</file>
-        <file>05.png</file>
+        <file>0.png</file>
+        <file>1.png</file>
+        <file>2.png</file>
+        <file>3.png</file>
+        <file>4.png</file>
+        <file>5.png</file>
         <file>background.png</file>
     </qresource>
 </RCC>
