@@ -67,6 +67,6 @@ public:
 };
 
 int main(int argc, char *argv[]){
-    InitProgram::testConnection();
+    InitProgram::initGUITest(argc, argv);
     return 0;
 }
