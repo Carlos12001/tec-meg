@@ -101,9 +101,9 @@ void MainWindow::defineFinalResult() {
 
     if (unCompleteCouple == 0){
         timer->stop();
-        messageBox.setText("¡Ganaste! Puntaje final: " + QString::number(points*1000) + "\nVolver a jugar?");
+        messageBox.setText("¡Ganaste! Puntaje final: " + QString::number(points*1000));
         if (QMessageBox::Yes == messageBox.exec()){
-            initGame();
+            QCoreApplication::quit();
         }
         else{
             QCoreApplication::quit();
@@ -113,9 +113,9 @@ void MainWindow::defineFinalResult() {
         if (time.toString()=="00:00:00"){
             timer->stop();
             ui->frameMatriz->setEnabled(false);
-            messageBox.setText("Perdiste ;( \n¿Volver a jugar?");
+            messageBox.setText("Perdiste ;(");
             if (QMessageBox::Yes == messageBox.exec()){
-                initGame();
+                QCoreApplication::quit();
             }
             else{
                 QCoreApplication::quit();
@@ -133,7 +133,7 @@ void MainWindow::mixCards() {
 
 void MainWindow::distributeCards() {
     auto iterator=vectorCards.begin();
-    for (int i=1; i<=6; i++){
+    for (int i=0; i<=5; i++){
         QString file_name="0"+QString::number(i)+".png";
         hashCards[(*iterator)]=file_name;
         iterator++;
@@ -164,6 +164,8 @@ void MainWindow::defineMiddleResult() {
 
 void MainWindow::showImage() {
     QString cardName= actualCard->objectName();
+    //Llama pide informacion al server
+    //Recibe la informacion
     QString img = hashCards[cardName];
     actualCard->setStyleSheet("#" +
                               cardName + "{ background-image: url(:/images/" + img + ") }");
