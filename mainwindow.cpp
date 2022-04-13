@@ -134,7 +134,7 @@ void MainWindow::mixCards() {
 void MainWindow::distributeCards() {
     auto iterator=vectorCards.begin();
     for (int i=0; i<=5; i++){
-        QString file_name="0"+QString::number(i)+".png";
+        QString file_name= QString::number(i)+".png";
         hashCards[(*iterator)]=file_name;
         iterator++;
         hashCards[(*iterator)]=file_name;
