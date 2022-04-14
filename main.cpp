@@ -3,6 +3,8 @@
 #include "mainwindow.h"
 #include "utilities.h"
 #include <QApplication>
+#include "server.h"
+#include "game.h"
 using namespace std;
 class InitProgram {
 public:
@@ -64,9 +66,13 @@ public:
         w.show();
         return app.exec();
     }
+
+    static void matrixMemoryTest1(){
+        auto matrix = MatrixMemory(42);
+    };
 };
 
 int main(int argc, char *argv[]){
-    InitProgram::initGUITest(argc, argv);
+    InitProgram::matrixMemoryTest1();
     return 0;
 }

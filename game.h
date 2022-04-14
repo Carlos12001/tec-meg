@@ -20,9 +20,13 @@ public:
 class Card{
 public:
     string id;
+
     int positionI;
+
     int positionJ;
+
     string image;
+
     bool used = false;
 };
 
@@ -36,9 +40,10 @@ class MatrixMemory{
 private:
     map <string, Card> ram;
     Card replaceCard();
-    void mixCards();
+    template <class T > void mixCards( list<T> &listTemp );
     void distributeCards();
     void initMatrix();
+    void firstSaveInDisk(list<string>& images, list<Card>& allCards);
 
 public:
     const int sizeI = 10;

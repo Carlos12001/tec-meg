@@ -3,6 +3,6 @@
 TEC-MEG means Memory Game TEC.
 
 sudo pacman -S qt5-base
-
-Yano
-paru -S libsocket
+sudo pacman -S gcc
+sudo pacman -S cmake
+sudo pacman -S nlohmann-json
