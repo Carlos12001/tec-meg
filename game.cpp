@@ -71,7 +71,7 @@ Card* MatrixMemory::getCardFromDisk(string id) {
     json dataDisk;
     file >> dataDisk;
     file.close();
-    Card* foundCard;
+    Card* foundCard = nullptr;
     for (int i = 0; i < sizeJ*sizeI; ++i) {
         string idIterator = dataDisk[i].at("id");
         if(id == idIterator){
