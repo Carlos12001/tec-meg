@@ -70,6 +70,12 @@ public:
     static void matrixMemoryTest1(){
         auto matrix = MatrixMemory(42);
     };
+
+    static void matrixMemoryTest2(){
+        auto matrix = MatrixMemory(42);
+        matrix.getCard(0,0);
+        matrix.getCard(8, 1);
+    };
 };
 
 int main(int argc, char *argv[]){

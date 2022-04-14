@@ -39,7 +39,7 @@ public:
 class MatrixMemory{
 private:
     map <string, Card*> ram;
-    template <class T > void mixCards( list<T> &listTemp );
+    template <class T > void mixElementsList(list<T> &listTemp );
     void initMatrix();
     void firstSaveInDisk(list<string>& images, list<Card>& allCards);
     Card* replaceCard();

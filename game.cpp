@@ -33,13 +33,13 @@ void MatrixMemory::initMatrix() {
         }
     }
 
-    mixCards(images);
+    mixElementsList(images);
     firstSaveInDisk(images, allCards);
     initRam();
     getMemoryState();
 }
 
-template<class T> void MatrixMemory::mixCards(list<T> &listTemp) {
+template<class T> void MatrixMemory::mixElementsList(list<T> &listTemp) {
     mt19937 gen( chrono::system_clock::now().time_since_epoch().count() );
     vector<T> V(listTemp.begin(), listTemp.end() );
     shuffle( V.begin(), V.end(), gen );
@@ -88,6 +88,10 @@ Card* MatrixMemory::getCardFromDisk(string id) {
             break;
         }
     }
+    if(foundCard==nullptr){
+        cerr << "Error: No found card in the disk" << endl;
+        exit(-1);
+    }
     return foundCard;
 }
 
@@ -98,7 +102,7 @@ void MatrixMemory::initRam() {
             if(sizeJ*sizeI*0.3<=counter) break;
             else counter++;
             string id = string("cardI") + to_string(i) + string("J") + to_string(j);
-            Card* card = getCardFromDisk(id);
+            auto card = getCardFromDisk(id);
             ram[id] = card;
         }
     }
@@ -106,10 +110,48 @@ void MatrixMemory::initRam() {
 
 string MatrixMemory::getMemoryState() {
     string result;
-    const map<std::string, Card*>& m = ram;
-    for (const auto& [key, value] : m) {
-        std::cout << '[' << key << "] = " << value->image << "; ";
+    cout << "The state of the ram is: " << endl;
+    for (const auto& [key, value] : ram) {
+        std::cout << '[' << key << "] = " << value->image << "; " << endl;
         result += string("[") + key + string("] = ") + value->image + string("; ");
     }
     return result;
+}
+
+Card* MatrixMemory::replaceCard() {
+    Card* resultCard = nullptr;
+    list<string> idCards;
+    for (const auto& [key, value] : ram) {
+        idCards.push_back(key);
+    }
+    mixElementsList(idCards);
+    auto iteratorList = idCards.begin();
+    auto iteratorRam = ram.find(*iteratorList);
+    resultCard = iteratorRam->second;
+    return resultCard;
+}
+
+Card* MatrixMemory::getCard(string id) {
+    Card* resultCard = nullptr;
+    auto iterator = ram.find(id);
+    if (  iterator == ram.end() ) {
+        cout << endl << "--------------" << "PAGE FAULT" <<  "--------------" << endl;
+        cout<<"Element \"" << id << "\" not found" << endl;
+
+        auto deleteCard = replaceCard();
+        auto replacementCard = getCardFromDisk(id);
+
+        iterator = ram.find(deleteCard->id);
+        delete iterator->second;
+        ram.erase(iterator);
+
+        ram[id] = replacementCard;
+        iterator = ram.find(id);
+    }
+    resultCard = iterator->second;
+    return resultCard;
+}
+
+Card *MatrixMemory::getCard(int positionI, int positionJ) {
+    return getCard(string("cardI") + to_string(positionI) + string("J") + to_string(positionJ));
 }
