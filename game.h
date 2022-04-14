@@ -38,18 +38,20 @@ public:
 
 class MatrixMemory{
 private:
-    map <string, Card> ram;
-    Card replaceCard();
+    map <string, Card*> ram;
     template <class T > void mixCards( list<T> &listTemp );
-    void distributeCards();
     void initMatrix();
     void firstSaveInDisk(list<string>& images, list<Card>& allCards);
+    Card* replaceCard();
+    Card* getCard(string id);
+    Card* getCardFromDisk(string id);
+    void initRam();
 
 public:
     const int sizeI = 10;
     const int sizeJ;
     MatrixMemory(int numberCards);
-    Card getCard(string id);
+    Card* getCard(int positionI, int positionJ);
     string getMemoryState();
 };
 

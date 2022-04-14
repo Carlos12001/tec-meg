@@ -35,7 +35,8 @@ void MatrixMemory::initMatrix() {
 
     mixCards(images);
     firstSaveInDisk(images, allCards);
-
+    initRam();
+    getMemoryState();
 }
 
 template<class T> void MatrixMemory::mixCards(list<T> &listTemp) {
@@ -63,4 +64,52 @@ void MatrixMemory::firstSaveInDisk(list<string>& images, list<Card>& allCards) {
     ofstream file("data.json");
     file << std::setw(4) << dataDisk << std::endl;
     file.close();
+}
+
+Card* MatrixMemory::getCardFromDisk(string id) {
+    ifstream file("data.json", std::ifstream::in);
+    json dataDisk;
+    file >> dataDisk;
+    file.close();
+    Card* foundCard;
+    for (int i = 0; i < sizeJ*sizeI; ++i) {
+        string idIterator = dataDisk[i].at("id");
+        if(id == idIterator){
+            int positionI = dataDisk[i].at("positionI");
+            int positionJ = dataDisk[i].at("positionJ");
+            string image = dataDisk[i].at("image");
+            bool used = dataDisk[i].at("used");
+            foundCard = new Card;
+            foundCard->id = id;
+            foundCard->positionI = positionI;
+            foundCard->positionJ = positionJ;
+            foundCard->image = image;
+            foundCard->used = used;
+            break;
+        }
+    }
+    return foundCard;
+}
+
+void MatrixMemory::initRam() {
+    int counter = 0;
+    for (int i = 0; i < sizeI ; ++i) {
+        for (int j = 0; j < sizeJ ; ++j) {
+            if(sizeJ*sizeI*0.3<=counter) break;
+            else counter++;
+            string id = string("cardI") + to_string(i) + string("J") + to_string(j);
+            Card* card = getCardFromDisk(id);
+            ram[id] = card;
+        }
+    }
+}
+
+string MatrixMemory::getMemoryState() {
+    string result;
+    const map<std::string, Card*>& m = ram;
+    for (const auto& [key, value] : m) {
+        std::cout << '[' << key << "] = " << value->image << "; ";
+        result += string("[") + key + string("] = ") + value->image + string("; ");
+    }
+    return result;
 }
