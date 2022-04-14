@@ -167,8 +167,12 @@ void MainWindow::showImage() {
     //Llama pide informacion al server
     //Recibe la informacion
     QString img = hashCards[cardName];
+//    height = 54
+//    width = 69
     actualCard->setStyleSheet("#" +
-                              cardName + "{ background-image: url(:/images/" + img + ") }");
+                              cardName + "{\n"
+                            + " border-image: url(:/images/" + img + ") 0 0 0 0 stretch stretch;\n"
+                            + "}");
 }
 
 void MainWindow::rebootCards() {
