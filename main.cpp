@@ -72,13 +72,14 @@ public:
     };
 
     static void matrixMemoryTest2(){
-        auto matrix = MatrixMemory(42);
+        auto matrix = MatrixMemory(20);
         matrix.getCard(0,0);
         matrix.getCard(8, 1);
+        matrix.getMemoryState();
     };
 };
 
 int main(int argc, char *argv[]){
-    InitProgram::matrixMemoryTest1();
+    InitProgram::matrixMemoryTest2();
     return 0;
 }
