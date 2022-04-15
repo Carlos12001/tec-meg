@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(timer, SIGNAL(timeout()), this,
             SLOT(updateState()));
 
-    int numberCards = 10 + receiveSizeMatrix();
+    int numberCards = 10 + receiveInformation();
     unCompleteCouple = numberCards/2;
     createButtonCards(numberCards);
     initGame();
@@ -134,7 +134,7 @@ void MainWindow::showImage() {
     //Llama pide informacion al server
     sendIdCard(cardName.toStdString());
     //Recibe la informacion
-    string image = receiveImage();
+    string image = receiveCard();
     hashCards[cardName] = QString::fromStdString(image);
 
     actualCard->setStyleSheet("#" +
@@ -172,14 +172,14 @@ void MainWindow::createButtonCards(int numbOfButtons) {
     }
 }
 
-string MainWindow::receiveImage() {
+string MainWindow::receiveCard() {
     return "5.png";
 }
 
 void MainWindow::sendIdCard(string idCard) {
 }
 
-int MainWindow::receiveSizeMatrix() {
+int MainWindow::receiveInformation() {
     return 0;
 }
 

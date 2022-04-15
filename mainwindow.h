@@ -47,9 +47,9 @@ private slots:
     void showImage();
     void rebootCards();
     void createButtonCards(int numbOfButtons);
-    string receiveImage();
+    string receiveCard();
     void sendIdCard(string idCard);
-    int receiveSizeMatrix();
+    int receiveInformation();
     void showPoints(int addPoints);
     void changeTurn();
 
