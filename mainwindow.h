@@ -26,10 +26,10 @@ public:
     QTimer *timer = new QTimer;
     QTime time;
     QMessageBox messageBox;
-    QVector<QString> vectorCards;
     QHash<QString, QString> hashCards;
+    QHash<QString, QPushButton*> hashButton;
     int unCompleteCouple = 0;
-    int points = 0;
+    int pointsPlayer1 = 0;
     bool inGame = false;
     QPushButton* previousCard;
     QPushButton* actualCard;
@@ -41,15 +41,16 @@ private slots:
     void updateTimer();
     void defineFinalResult();
     void defineMiddleResult();
-    void scopeEventClick();
     void showCard();
-    void mixCards();
-    void distributeCards();
     void showImage();
     void rebootCards();
+    void createButtonCards(int numbOfButtons);
+    string receiveImage();
+    void sendIdCard(string idCard);
+    int receiveSizeMatrix();
 
 private:
     Ui::MainWindow *ui;
 };
-#endif // MAINWINDOW_H
+#endif
 
