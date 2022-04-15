@@ -1,18 +1,14 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <QtGui>
 #include <QtWidgets>
-#include <string.h>
 #include <random>
 #include <QMainWindow>
 #include <QTimer>
-#include <QTime>
 #include <QMessageBox>
 #include <QFrame>
 #include <QString>
-#include <QHash>
-#include <QVector>
-
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -172,17 +168,6 @@ void MainWindow::createButtonCards(int numbOfButtons) {
     }
 }
 
-string MainWindow::receiveCard() {
-    return "5.png";
-}
-
-void MainWindow::sendIdCard(string idCard) {
-}
-
-int MainWindow::receiveInformation() {
-    return 0;
-}
-
 void MainWindow::changeTurn(){
     playerOne = !playerOne;
     if(playerOne){
@@ -205,3 +190,14 @@ void MainWindow::showPoints(int addPoints) {
     ui->labelPointsP2->setText(QString::fromStdString("Points Player 2: ") + QString::number(pointsPlayer2*100));
 }
 
+string MainWindow::receiveCard() {
+    return "5.png";
+}
+
+void MainWindow::sendIdCard(string idCard) {
+    return;
+}
+
+int MainWindow::receiveInformation() {
+    return 0;
+}

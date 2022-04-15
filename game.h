@@ -30,11 +30,6 @@ public:
     bool used = false;
 };
 
-class InformationMessage{
-public:
-    string getInfo();
-    void setInfo(const InformationMessage);
-};
 
 class MatrixMemory{
 private:
@@ -59,9 +54,7 @@ public:
 class Game {
 public:
     Player players[2];
-    MatrixMemory memory;
     void initGame();
-
 };
 
 
