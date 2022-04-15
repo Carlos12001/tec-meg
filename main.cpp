@@ -80,6 +80,6 @@ public:
 };
 
 int main(int argc, char *argv[]){
-    InitProgram::matrixMemoryTest2();
+    InitProgram::initGUITest(argc, argv);
     return 0;
 }
