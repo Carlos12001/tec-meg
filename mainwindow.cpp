@@ -31,13 +31,17 @@ void MainWindow::initGame() {
 
     //Player 1
     pointsPlayer1 = 0;
-    ui->labelPointsP1->setText(QString::fromStdString("Points Player 1: ") + QString::number(pointsPlayer1 * 100));
+    ui->labelPointsP1->setText(QString::fromStdString("Points Player 1: ") + QString::number(pointsPlayer1));
+    ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
+
+    //Player 2
+    pointsPlayer1 = 0;
+    ui->labelPointsP1->setText(QString::fromStdString("Points Player 2: ") + QString::number(pointsPlayer1));
 
     time.setHMS(0, 5, 0);
     ui->labelTimer->setText(time.toString("m::ss"));
     timer->start(1000);
 }
-
 
 void MainWindow::updateState() {
     updateTimer();
@@ -90,7 +94,6 @@ void MainWindow::defineFinalResult() {
     }
 }
 
-
 void MainWindow::showCard() {
     actualCard = qobject_cast<QPushButton*>(sender());
     showImage();
@@ -112,6 +115,8 @@ void MainWindow::defineMiddleResult() {
     if (hashCards[actualCard->objectName()]==hashCards[previousCard->objectName()]){
         showPoints(15);
         unCompleteCouple--;
+
+        //Extra Points
 
         //if there is a match, find out if all tiles have been matched.
         defineFinalResult();
