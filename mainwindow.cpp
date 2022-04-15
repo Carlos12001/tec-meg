@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(timer, SIGNAL(timeout()), this,
             SLOT(updateState()));
 
-    int numberCards = 100 + receiveSizeMatrix();
+    int numberCards = 10 + receiveSizeMatrix();
     unCompleteCouple = numberCards/2;
     createButtonCards(numberCards);
     initGame();
@@ -37,7 +37,7 @@ void MainWindow::initGame() {
     pointsPlayer1 = 0;
     ui->labelPointsP1->setText(QString::fromStdString("Points Player 1: ") + QString::number(pointsPlayer1 * 100));
 
-    time.setHMS(0, 1, 0);
+    time.setHMS(0, 5, 0);
     ui->labelTimer->setText(time.toString("m::ss"));
     timer->start(1000);
 }
@@ -63,7 +63,21 @@ void MainWindow::defineFinalResult() {
 
     if (unCompleteCouple == 0){
         timer->stop();
-        messageBox.setText("¡Ganaste! Puntaje final: " + QString::number(pointsPlayer1 * 100));
+        QString winnerName;
+        QString winnerPoints;
+        if(pointsPlayer2<pointsPlayer1){
+            winnerName = "Player 1";
+            winnerPoints = QString::number(pointsPlayer1 * 100);
+        }
+        else if (pointsPlayer2>pointsPlayer1){
+            winnerName = "Player 2";
+            winnerPoints = QString::number(pointsPlayer2 * 100);
+        }
+        else {
+            winnerName = "Player 1 y Player 2";
+            winnerPoints = QString::number(pointsPlayer2 * 100);
+        }
+        messageBox.setText("¡Ganaste " + winnerName +"! Puntaje final: " + winnerPoints );
         if (QMessageBox::Yes == messageBox.exec()) {
             QCoreApplication::quit();
         }
@@ -72,7 +86,7 @@ void MainWindow::defineFinalResult() {
         if (time.toString()=="00:00:00"){
             timer->stop();
             ui->frameMatriz->setEnabled(false);
-            messageBox.setText("Perdiste ;(");
+            messageBox.setText("Perdieron ;(");
             if (QMessageBox::Yes == messageBox.exec()){
                 QCoreApplication::quit();
             }
@@ -100,17 +114,15 @@ void MainWindow::showCard() {
 void MainWindow::defineMiddleResult() {
     //check if there is a match (the current tile matches the previous tile in the turn)
     if (hashCards[actualCard->objectName()]==hashCards[previousCard->objectName()]){
-        pointsPlayer1+=15;
-        ui->labelPointsP1->setText(QString::fromStdString("Points Player 1: ") + QString::number(pointsPlayer1*100));
+        showPoints(15);
         unCompleteCouple--;
 
         //if there is a match, find out if all tiles have been matched.
         defineFinalResult();
     }
     else{
-        pointsPlayer1 -= 5;
-        ui->labelPointsP1->setText(QString::fromStdString("Points Player 1: ") + QString::number(pointsPlayer1*100));
-
+        showPoints(-5);
+        changeTurn();
         ui->matrixGame->setEnabled(false);
 
         QTimer::singleShot(1000, this, SLOT(rebootCards()));
@@ -161,16 +173,7 @@ void MainWindow::createButtonCards(int numbOfButtons) {
 }
 
 string MainWindow::receiveImage() {
-    list <string> listTemp;
-    for (int i = 0; i < unCompleteCouple/10; ++i) {
-        listTemp.push_back(to_string(unCompleteCouple) + string(".png"));
-        listTemp.push_back(to_string(unCompleteCouple) + string(".png"));
-    }
-    mt19937 gen( chrono::system_clock::now().time_since_epoch().count() );
-    vector<string> V(listTemp.begin(), listTemp.end() );
-    shuffle( V.begin(), V.end(), gen );
-    listTemp.assign(V.begin(), V.end() );
-    return string("5.png");
+    return "5.png";
 }
 
 void MainWindow::sendIdCard(string idCard) {
@@ -178,5 +181,27 @@ void MainWindow::sendIdCard(string idCard) {
 
 int MainWindow::receiveSizeMatrix() {
     return 0;
+}
+
+void MainWindow::changeTurn(){
+    playerOne = !playerOne;
+    if(playerOne){
+        ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
+        ui->labelPointsP2->setStyleSheet("#labelPointsP2{ \n color: rgb(255, 255, 255); \n background-color: rgb(154, 153, 150); \n }");
+    }
+    else{
+        ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(154, 153, 150); \n }");
+        ui->labelPointsP2->setStyleSheet("#labelPointsP2{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
+    }
+}
+
+void MainWindow::showPoints(int addPoints) {
+    if(playerOne){
+        pointsPlayer1 += addPoints;
+    }else{
+        pointsPlayer2 += addPoints;
+    }
+    ui->labelPointsP1->setText(QString::fromStdString("Points Player 1: ") + QString::number(pointsPlayer1*100));
+    ui->labelPointsP2->setText(QString::fromStdString("Points Player 2: ") + QString::number(pointsPlayer2*100));
 }
 

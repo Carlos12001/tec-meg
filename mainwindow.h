@@ -30,6 +30,8 @@ public:
     QHash<QString, QPushButton*> hashButton;
     int unCompleteCouple = 0;
     int pointsPlayer1 = 0;
+    int pointsPlayer2 = 0;
+    bool playerOne = true;
     bool inGame = false;
     QPushButton* previousCard;
     QPushButton* actualCard;
@@ -48,6 +50,8 @@ private slots:
     string receiveImage();
     void sendIdCard(string idCard);
     int receiveSizeMatrix();
+    void showPoints(int addPoints);
+    void changeTurn();
 
 private:
     Ui::MainWindow *ui;
