@@ -12,6 +12,7 @@ void Server::updateState() {
         string idCard = receiveCard();
         if("FINISH")
             break;
+        game->updateGame(0,0);
         sendIdCard(idCard);
     }
     cout << "\n--------------------" << "The final state of the ram is: " << "--------------------" << endl;

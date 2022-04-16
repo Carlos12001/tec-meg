@@ -17,8 +17,6 @@ public:
 
     int points;
 
-    bool myTurn = false;
-
 };
 
 class Card{
@@ -31,7 +29,7 @@ public:
 
     string image;
 
-    bool used = false;
+    bool inMemory = false;
 };
 
 class MatrixMemory{

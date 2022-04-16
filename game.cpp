@@ -57,7 +57,7 @@ void MatrixMemory::firstSaveInDisk(list<string>& images, list<Card>& allCards) {
                             {"positionI", tmp.positionI},
                             {"positionJ", tmp.positionJ},
                             {"image", tmp.image},
-                            {"used", tmp.used}});
+                            {"inMemory", tmp.inMemory}});
         card++;
         imageSrc++;
     }
@@ -78,13 +78,13 @@ Card* MatrixMemory::getCardFromDisk(string id) {
             int positionI = dataDisk[i].at("positionI");
             int positionJ = dataDisk[i].at("positionJ");
             string image = dataDisk[i].at("image");
-            bool used = dataDisk[i].at("used");
+            bool inMemory = dataDisk[i].at("inMemory");
             foundCard = new Card;
             foundCard->id = id;
             foundCard->positionI = positionI;
             foundCard->positionJ = positionJ;
             foundCard->image = image;
-            foundCard->used = used;
+            foundCard->inMemory = inMemory;
             break;
         }
     }
@@ -103,6 +103,7 @@ void MatrixMemory::initRam() {
             else counter++;
             string id = string("cardI") + to_string(i) + string("J") + to_string(j);
             auto card = getCardFromDisk(id);
+            card->inMemory = true;
             ram[id] = card;
         }
     }
@@ -147,8 +148,10 @@ Card* MatrixMemory::getCard(string id) {
 
         ram[id] = replacementCard;
         iterator = ram.find(id);
+        iterator->second->inMemory = true;
     }
     resultCard = iterator->second;
+    resultCard->inMemory = !(resultCard->inMemory);
     return resultCard;
 }
 
