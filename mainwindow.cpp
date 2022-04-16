@@ -10,6 +10,10 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+/**
+     * @brief It is the class constructor. He gets who the window is and sets it.
+     * @param parent The window to run.
+     */
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
     cout << "Initialize MainWindow" << endl;
@@ -19,11 +23,18 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
 }
 
+/**
+     * @brief Destroy the object. Perform all the necessary steps to successfully close the program.
+     */
 MainWindow::~MainWindow(){
     sendIdCard("FINISH");
     delete ui;
 }
 
+/**
+     * @brief The game starter. This initiates a lot of things between them are the connection of the client and the cards that the game.
+     * @param numberPort The port's number where is located the server.
+     */
 void MainWindow::initGame(int numberPort) {
     connection.setPortNumber(numberPort);
     connection.initConnection();
@@ -49,16 +60,25 @@ void MainWindow::initGame(int numberPort) {
     timer->start(1000);
 }
 
+/**
+     * @brief Update game status. Update things related to time.
+     */
 void MainWindow::updateState() {
     updateTimer();
     defineFinalResult();
 }
 
+/**
+     * @brief Update the weather. Update it in label.
+     */
 void MainWindow::updateTimer() {
     time = time.addSecs(-1);
     ui->labelTimer->setText(time.toString("m:ss"));
 }
 
+/**
+     * @brief Define the end result. This performs the analysis if a final result is already possible.
+     */
 void MainWindow::defineFinalResult() {
     messageBox.setWindowTitle("Juego terminado");
     messageBox.setIcon(QMessageBox::Information);
@@ -100,22 +120,9 @@ void MainWindow::defineFinalResult() {
         }
 }
 
-void MainWindow::showCard() {
-    actualCard = qobject_cast<QPushButton*>(sender());
-    showImage();
-    actualCard->setEnabled(false);
-
-    if (!inGame){
-        previousCard = actualCard;
-        inGame = true;
-    }
-    else{
-        defineMiddleResult();
-        hashCards.clear();
-        inGame = false;
-    }
-}
-
+/**
+     * @brief Check if the player's move was correct. It checks if the successful move
+     */
 void MainWindow::defineMiddleResult() {
     //check if there is a match (the current tile matches the previous tile in the turn)
     if (hashCards[actualCard->objectName()]==hashCards[previousCard->objectName()]){
@@ -136,6 +143,28 @@ void MainWindow::defineMiddleResult() {
     }
 }
 
+/**
+     * @brief Check the card states. These states whether it is in the middle of the play or not.
+     */
+void MainWindow::showCard() {
+    actualCard = qobject_cast<QPushButton*>(sender());
+    showImage();
+    actualCard->setEnabled(false);
+
+    if (!inGame){
+        previousCard = actualCard;
+        inGame = true;
+    }
+    else{
+        defineMiddleResult();
+        hashCards.clear();
+        inGame = false;
+    }
+}
+
+/**
+    * @brief Shows the selected card. It asks the server for things and then sets them.
+    */
 void MainWindow::showImage() {
     QString cardName = actualCard->objectName();
     //Llama pide informacion al server
@@ -150,6 +179,9 @@ void MainWindow::showImage() {
                             + "}");
 }
 
+/**
+     * @brief Turn over the cards. This is executed if the cards were not the same so that it erases its information and hides them again.
+     */
 void MainWindow::rebootCards() {
     previousCard->setStyleSheet("#" + previousCard->objectName() + "{ }");
     actualCard->setStyleSheet("#" + actualCard->objectName() + "{ }");
@@ -160,6 +192,10 @@ void MainWindow::rebootCards() {
     ui->matrixGame->setEnabled(true);
 }
 
+/**
+     * @brief Create the card buttons. This creates all the buttons that will be seen on the screen so that the user can press them.
+     * @param numbOfButtons Number of buttons to create.
+     */
 void MainWindow::createButtonCards(int numbOfButtons) {
     int sizeI = 10;
     int sizeJ = numbOfButtons/10;
@@ -179,18 +215,46 @@ void MainWindow::createButtonCards(int numbOfButtons) {
     }
 }
 
-void MainWindow::changeTurn(){
-    playerOne = !playerOne;
-    if(playerOne){
-        ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
-        ui->labelPointsP2->setStyleSheet("#labelPointsP2{ \n color: rgb(255, 255, 255); \n background-color: rgb(154, 153, 150); \n }");
-    }
-    else{
-        ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(154, 153, 150); \n }");
-        ui->labelPointsP2->setStyleSheet("#labelPointsP2{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
-    }
+/**
+     * @brief Receive the button image. This method receives information about a card from the server.
+     * @return Returns the image of the card.
+     */
+string MainWindow::receiveCard() {
+    string data = connection.getMessage();
+    json jsonCard;
+    jsonCard= json::parse(data);
+    string image = jsonCard["image"];
+    inMemory = jsonCard["inMemory"];
+    return image;
 }
 
+/**
+     * @brief Request information from this letter. Send a request to the server about the letter you need.
+     * @param idCard The ID of the card.
+     */
+void MainWindow::sendIdCard(string idCard) {
+    json jsonIDCard;
+    jsonIDCard = {{"id", idCard}};
+    connection.sendMessage(jsonIDCard.dump(4));
+    return;
+}
+
+/**
+     * @brief Get the basic information from the server. This information is like the number of minimum cards.
+     * @return The number of cards
+     */
+int MainWindow::receiveInformation() {
+    string data = connection.getMessage();
+    json jsonNumOfCards;
+    jsonNumOfCards = json::parse(data);
+    int numOfCards = jsonNumOfCards["numOfCards"];
+    return numOfCards;
+}
+
+/**
+     * @brief Shows the points of the players. It receives the new points and displays them.
+     * @param addPoints The new points.
+     */
 void MainWindow::showPoints(int addPoints) {
     if(playerOne){
         pointsPlayer1 += addPoints;
@@ -201,26 +265,17 @@ void MainWindow::showPoints(int addPoints) {
     ui->labelPointsP2->setText(QString::fromStdString("Points Player 2: ") + QString::number(pointsPlayer2*100));
 }
 
-string MainWindow::receiveCard() {
-    string data = connection.getMessage();
-    json jsonCard;
-    jsonCard= json::parse(data);
-    string image = jsonCard["image"];
-    inMemory = jsonCard["inMemory"];
-    return image;
-}
-
-void MainWindow::sendIdCard(string idCard) {
-    json jsonIDCard;
-    jsonIDCard = {{"id", idCard}};
-    connection.sendMessage(jsonIDCard.dump(4));
-    return;
-}
-
-int MainWindow::receiveInformation() {
-    string data = connection.getMessage();
-    json jsonNumOfCards;
-    jsonNumOfCards = json::parse(data);
-    int numOfCards = jsonNumOfCards["numOfCards"];
-    return numOfCards;
+/**
+     * @brief Change the color of the point labels.
+     */
+void MainWindow::changeTurn(){
+    playerOne = !playerOne;
+    if(playerOne){
+        ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
+        ui->labelPointsP2->setStyleSheet("#labelPointsP2{ \n color: rgb(255, 255, 255); \n background-color: rgb(154, 153, 150); \n }");
+    }
+    else{
+        ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(154, 153, 150); \n }");
+        ui->labelPointsP2->setStyleSheet("#labelPointsP2{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
+    }
 }
