@@ -50,6 +50,10 @@
         <file>47.png</file>
         <file>48.png</file>
         <file>49.png</file>
+        <file>extraPoints0.png</file>
+        <file>extraPoints1.png</file>
+        <file>extraPoints2.png</file>
+        <file>extraPoints3.png</file>
         <file>background.png</file>
     </qresource>
 </RCC>

@@ -114,6 +114,8 @@ private:
      */
     ClientConnection connection  = ClientConnection();
 
+    int succesfull = 0;
+
 public slots:
 
     /**
@@ -194,13 +196,18 @@ private slots:
      */
     void changeTurn();
 
+    void showInMemory();
+
+    void extraPoints ();
+
+    void showExtraPoints(string type);
+
 private:
 
     /**
      * @brief The GUI window.
      */
     Ui::MainWindow *ui;
-
 };
 
 #endif

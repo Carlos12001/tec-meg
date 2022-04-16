@@ -124,6 +124,7 @@ void MainWindow::defineFinalResult() {
      * @brief Check if the player's move was correct. It checks if the successful move
      */
 void MainWindow::defineMiddleResult() {
+
     //check if there is a match (the current tile matches the previous tile in the turn)
     if (hashCards[actualCard->objectName()]==hashCards[previousCard->objectName()]){
         showPoints(15);
@@ -133,14 +134,19 @@ void MainWindow::defineMiddleResult() {
 
         //if there is a match, find out if all tiles have been matched.
         defineFinalResult();
+
+        showInMemory();
+        succesfull++;
+        extraPoints();
     }
     else{
         showPoints(-5);
         changeTurn();
         ui->matrixGame->setEnabled(false);
-
         QTimer::singleShot(1000, this, SLOT(rebootCards()));
+        succesfull = 0;
     }
+    inMemory = false;
 }
 
 /**
@@ -224,7 +230,7 @@ string MainWindow::receiveCard() {
     json jsonCard;
     jsonCard= json::parse(data);
     string image = jsonCard["image"];
-    inMemory = jsonCard["inMemory"];
+    inMemory = jsonCard["inMemory"] || inMemory;
     return image;
 }
 
@@ -278,4 +284,44 @@ void MainWindow::changeTurn(){
         ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(154, 153, 150); \n }");
         ui->labelPointsP2->setStyleSheet("#labelPointsP2{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
     }
+}
+
+void MainWindow::showInMemory(){
+    if(inMemory){
+        showPoints(5);
+        ui->labelInMemory->setText("In memory the last Cards Selected : Yes");
+        ui->labelInMemory->setStyleSheet("#labelInMemory{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
+    }else{
+        ui->labelInMemory->setText("In memory the last Cards Selected : No");
+        ui->labelInMemory->setStyleSheet("#labelInMemory{ \n color: rgb(255, 255, 255); \n background-color: rgb(246, 97, 81); \n }");
+    }
+}
+void MainWindow::extraPoints(){
+    string extraPointsTypes[] = {"None", "Double Points", "+100 Points", "-100 Points Opponent"};
+    int choose = rand() % 4;
+    showExtraPoints(extraPointsTypes[choose]);
+}
+
+void MainWindow::showExtraPoints(string type){
+   if(type=="None"){
+       ui->labelExtraPointsImage->setStyleSheet("#labelExtraPointsImage{\n border-image: url(:/images/extraPoints0.png) 0 0 0 0 stretch stretch;\n}");
+       ui->labelExtraPointsName->setText("Last Event Type: None");
+   }
+   else if (type=="Double Points"){
+       showPoints(15);
+       ui->labelExtraPointsImage->setStyleSheet("#labelExtraPointsImage{\n border-image: url(:/images/extraPoints1.png) 0 0 0 0 stretch stretch;\n}");
+       ui->labelExtraPointsName->setText("Last Event Type: Double Points");
+   }
+   else if (type=="+100 Points"){
+       showPoints(1);
+       ui->labelExtraPointsImage->setStyleSheet("#labelExtraPointsImage{\n border-image: url(:/images/extraPoints2.png) 0 0 0 0 stretch stretch;\n}");
+       ui->labelExtraPointsName->setText("Last Event Type: +100 Points");
+   }
+   else if(type=="-100 Points Opponent"){
+       playerOne = !playerOne;
+       showPoints(1);
+       playerOne = !playerOne;
+       ui->labelExtraPointsImage->setStyleSheet("#labelExtraPointsImage{\n border-image: url(:/images/extraPoints3.png) 0 0 0 0 stretch stretch;\n}");
+       ui->labelExtraPointsName->setText("Last Event Type: -100 Points Opponent");
+   }
 }
