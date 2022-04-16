@@ -7,6 +7,9 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+/**
+     * @brief Update State od the game.
+     */
 void Server::updateState() {
     while(true){
         string idCard = receiveCard();
@@ -20,6 +23,11 @@ void Server::updateState() {
     exit(0);
 }
 
+/**
+     * @brief Init the game. Create the matrix memory, connection and game information.
+     * @param numberOfCards The number of Cards.
+     * @param numberPort The number of the port.
+     */
 void Server::initGame(int numberOfCards, int numberPort){
     connection = new ServerConnection;
     connection->setPortNumber(numberPort);
@@ -42,6 +50,10 @@ void Server::initGame(int numberOfCards, int numberPort){
     updateState();
 }
 
+/**
+     * @brief Send information from this letter. Send about the letter client need.
+     * @param idCard The ID of the card.
+     */
 void Server::sendIdCard(string idCard) {
     Card* cardToSend = matrixMemory->getCard(idCard);
     string stringCardSend;
@@ -54,6 +66,10 @@ void Server::sendIdCard(string idCard) {
     connection->sendMessage(stringCardSend);
 }
 
+/**
+     * @brief Send basic informaction to client. The client need this information to init.
+     * @param numberOfCards The number of Cards.
+     */
 void Server::sendBasicInformation(int numberOfCards) {
     json jsonNumOfCards;
     jsonNumOfCards = {{"numOfCards", numberOfCards}};
@@ -61,6 +77,10 @@ void Server::sendBasicInformation(int numberOfCards) {
     return;
 }
 
+/**
+     * @brief Receive the button image. This method receives the id about a card from the client need.
+     * @return Returns the id the card needed.
+     */
 string Server::receiveCard() {
     string data = connection->getMessage();
     json jsonIDCard;

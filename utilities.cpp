@@ -1,6 +1,11 @@
 #include "utilities.h"
 #include "iostream"
 using namespace std;
+
+/**
+     * @brief Recieve input from user and transform to int.
+     * @return The input in int.
+     */
 int Utilities::inputStringToInt() {
     int inputNumber, errorCounter = 0;
     string inputString;
