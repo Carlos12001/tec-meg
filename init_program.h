@@ -16,7 +16,7 @@ using namespace std;
 
 class InitProgram {
 public:
-    [[maybe_unused]] static void start();
+    [[maybe_unused]] static int start(int argc, char *argv[]);
 
     [[maybe_unused]] static void testConnection();
 
@@ -31,6 +31,10 @@ public:
     [[maybe_unused]] static void matrixMemoryTest2();
 
     [[maybe_unused]] static void testClientReceiveInformation();
+
+    [[maybe_unused]] static void testServerSendsInformation();
+
+    [[maybe_unused]] static void testReceiveInformation();
 };
 
 #endif //TEC_MEG_INIT_PROGRAM_H

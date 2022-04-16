@@ -12,8 +12,30 @@ using namespace std;
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
-[[maybe_unused]]  void InitProgram::start() {
-    return;
+[[maybe_unused]] int InitProgram::start(int argc, char *argv[]) {
+
+    cout << "Welcome to testConnection" << endl;
+    cout << " \"0\" for server or any number for client" << endl;
+    int inputSelection = Utilities::inputStringToInt();
+
+    cout << "Please enter a number for the port: " << endl;
+    int numberPort =  Utilities::inputStringToInt();
+    if (inputSelection == 0) {
+        cout << "Server" << endl;
+        cout << "Enter number of cards: " << endl;
+        int numOfCards = Utilities::inputStringToInt();
+
+        Server *server = new Server();
+        server->initGame(numOfCards, numberPort);
+        return 0;
+    } else {
+        cout << "Client" << endl;
+        QApplication app =  QApplication(argc, argv);
+        MainWindow w;
+        w.initGame(numberPort);
+        w.show();
+        return app.exec();
+    }
 }
 
 [[maybe_unused]] void InitProgram::testConnection() {
@@ -67,6 +89,9 @@ using json = nlohmann::json;
 [[maybe_unused]]  int InitProgram::initGUITest(int argc, char *argv[]){
     QApplication app =  QApplication(argc, argv);
     MainWindow w;
+    cout << "Please enter a number for the port: " << endl;
+    int number =  Utilities::inputStringToInt();
+    w.initGame(number);
     w.show();
     return app.exec();
 }
@@ -82,13 +107,49 @@ using json = nlohmann::json;
     matrix.getMemoryState();
 }
 
+[[maybe_unused]] void InitProgram::testReceiveInformation() {
+    cout << "Welcome to testConnection" << endl;
+    cout << " \"0\" for server or any number for client" << endl;
+    int inputNumber = Utilities::inputStringToInt();
+    if (inputNumber == 0) {
+        cout << "Test Server" << endl;
+        InitProgram::testServerSendsInformation();
+    } else {
+        cout << "Test Client" << endl;
+        InitProgram::testClientReceiveInformation();
+    }
+}
+
 [[maybe_unused]]  void InitProgram::testClientReceiveInformation(){
-    ClientConnection* connection = new ClientConnection();
+    auto connection = new ClientConnection;
+
+    cout << "Please enter a number for the port: " << endl;
+    int number =  Utilities::inputStringToInt();
+    connection->setPortNumber(number);
+
+
     connection->initConnection();
+
     string data = connection->getMessage();
     json jsonNumOfCards;
     jsonNumOfCards = json::parse(data);
     int numOfCards = jsonNumOfCards["numOfCards"];
     cout << "The number of cards is: " << numOfCards << endl;
+    return;
+}
+
+[[maybe_unused]]  void InitProgram::testServerSendsInformation(){
+    auto connection = new ServerConnection;
+
+    cout << "Please enter a number for the port: " << endl;
+    int number =  Utilities::inputStringToInt();
+    connection->setPortNumber(number);
+
+    connection->initConnection();
+    json jsonNumOfCards;
+    jsonNumOfCards = {{"numOfCards", 60}};
+    cout << "The json content is: \n" << jsonNumOfCards.dump(4) << endl;
+
+    connection->sendMessage(jsonNumOfCards.dump(4));
     return;
 }

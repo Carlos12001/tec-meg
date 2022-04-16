@@ -28,6 +28,8 @@ public:
 
     ~MainWindow();
 
+private:
+
     QTimer *timer = new QTimer;
 
     QTime time;
@@ -44,7 +46,6 @@ public:
 
     int pointsPlayer2 = 0;
 
-
     bool playerOne = true;
 
     bool inGame = false;
@@ -53,18 +54,17 @@ public:
 
     QPushButton* actualCard;
 
-    ClientConnection connection;
+    ClientConnection connection  = ClientConnection();
 
 public slots:
 
-    void initGame();
+    void initGame(int numberPort);
 
 private slots:
 
     void updateState();
 
     void updateTimer();
-
 
     void defineFinalResult();
 

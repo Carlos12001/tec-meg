@@ -1,6 +1,6 @@
 #include "init_program.h"
 
 int main(int argc, char *argv[]){
-    InitProgram::testClientReceiveInformation();
+    InitProgram::start(argc, argv);
     return 0;
 }

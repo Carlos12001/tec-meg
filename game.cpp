@@ -155,3 +155,17 @@ Card* MatrixMemory::getCard(string id) {
 Card *MatrixMemory::getCard(int positionI, int positionJ) {
     return getCard(string("cardI") + to_string(positionI) + string("J") + to_string(positionJ));
 }
+
+Game::Game(){
+    Player* player1 = new Player;
+    player1->name = "Player 1";
+    Player* player2 = new Player;
+    player2->name = "Player 2";
+    players[0]= player1;
+    players[1] = player2;
+}
+
+void Game::updateGame(int pointP1, int pointsP2) {
+    players[0]->points+=pointP1;
+    players[1]->points+=pointsP2;
+}

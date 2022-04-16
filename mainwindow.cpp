@@ -16,17 +16,22 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(timer, SIGNAL(timeout()), this,
             SLOT(updateState()));
 
-    int numberCards = 10 + receiveInformation();
-    unCompleteCouple = numberCards/2;
-    createButtonCards(numberCards);
-    initGame();
+
 }
 
 MainWindow::~MainWindow(){
     delete ui;
 }
 
-void MainWindow::initGame() {
+void MainWindow::initGame(int numberPort) {
+    connection.setPortNumber(numberPort);
+    connection.initConnection();
+
+    int numberCards = receiveInformation();
+    unCompleteCouple = numberCards/2;
+    createButtonCards(numberCards);
+
+
     inGame = false;
 
     //Player 1
@@ -116,7 +121,7 @@ void MainWindow::defineMiddleResult() {
         showPoints(15);
         unCompleteCouple--;
 
-        //Extra Points
+        //Extra Points if(extraPoints)
 
         //if there is a match, find out if all tiles have been matched.
         defineFinalResult();
@@ -204,5 +209,9 @@ void MainWindow::sendIdCard(string idCard) {
 }
 
 int MainWindow::receiveInformation() {
-    return 0;
+    string data = connection.getMessage();
+    json jsonNumOfCards;
+    jsonNumOfCards = json::parse(data);
+    int numOfCards = jsonNumOfCards["numOfCards"];
+    return numOfCards;
 }

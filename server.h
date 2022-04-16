@@ -13,12 +13,25 @@ using namespace std;
 
 class Server{
 private:
-    Game game;
-    ServerConnection connection;
+
+    MatrixMemory* matrixMemory = nullptr;
+
+    Game* game = nullptr;
+
+    ServerConnection* connection = nullptr;
 
 public:
+
     void updateState();
-    void initGame();
+
+    void initGame(int numberOfCards, int numberPort);
+
+    void sendBasicInformation(int numberOfCards);
+
+    string receiveCard();
+
+    void sendIdCard(string idCard);
+
 };
 
 
