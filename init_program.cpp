@@ -12,6 +12,12 @@ using namespace std;
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+/**
+     * @brief The method launcher the program. This program receives the necessary inputs to start the client or the server.
+     * @param argc Number of arguments when starting the program.
+     * @param argv The arguments when starting the program.
+     * @return Status of the program if it was executed successfully.
+     */
 int InitProgram::start(int argc, char *argv[]) {
 
     cout << "Welcome to testConnection" << endl;
@@ -38,6 +44,9 @@ int InitProgram::start(int argc, char *argv[]) {
     }
 }
 
+/**
+     * @brief Receives user input and executes the client or server. It first waits for the type of connection and then asks for the port.
+     */
 [[maybe_unused]] void TesterClass::testConnection() {
     cout << "Welcome to testConnection" << endl;
     cout << " \"0\" for server or any number for client" << endl;
@@ -51,6 +60,9 @@ int InitProgram::start(int argc, char *argv[]) {
     }
 }
 
+/**
+     * @brief Test the server connection. This performs a test of sending a message.
+     */
 [[maybe_unused]]  void TesterClass::testServerConnection() {
     auto connection = new ServerConnection;
 
@@ -68,6 +80,9 @@ int InitProgram::start(int argc, char *argv[]) {
     return;
 }
 
+/**
+     * @brief Test the client connection. This performs a test of sending a message.
+     */
 [[maybe_unused]]  void TesterClass::testClientConnection(){
     auto connection = new ClientConnection;
 
@@ -86,6 +101,12 @@ int InitProgram::start(int argc, char *argv[]) {
     return;
 }
 
+/**
+     * @brief Run the client interface. This method is deprecated since it works.
+     * @param argc Number of arguments when starting the program.
+     * @param argv The arguments when starting the program.
+     * @return Status of the program if it was executed successfully.
+     */
 [[maybe_unused]]  int TesterClass::initGUITest(int argc, char *argv[]){
     QApplication app =  QApplication(argc, argv);
     MainWindow w;
@@ -96,10 +117,16 @@ int InitProgram::start(int argc, char *argv[]) {
     return app.exec();
 }
 
+/**
+     * @brief Performs the start-of-array test. This initializes the array to check if it manages to save the info in the json.
+     */
 [[maybe_unused]]  void TesterClass::matrixMemoryTest1(){
     auto matrix = MatrixMemory(42);
 }
 
+/**
+ * @brief Take the test obtaining a letter from the matrix. Request the info of the letter that is in memory and another that is not.
+ */
 [[maybe_unused]] void TesterClass::matrixMemoryTest2(){
     auto matrix = MatrixMemory(20);
     matrix.getCard(0,0);
@@ -107,6 +134,9 @@ int InitProgram::start(int argc, char *argv[]) {
     matrix.getMemoryState();
 }
 
+/**
+     * @brief Performs a test of receiving and sending info in json format. This test is performed on the client receiving the message and the server sending the information.
+     */
 [[maybe_unused]] void TesterClass::testReceiveInformation() {
     cout << "Welcome to testConnection" << endl;
     cout << " \"0\" for server or any number for client" << endl;
@@ -120,6 +150,9 @@ int InitProgram::start(int argc, char *argv[]) {
     }
 }
 
+/**
+     * @brief Check if the client is able to receive the information in json. It reads the information from the server and transforms it into json.
+     */
 [[maybe_unused]]  void TesterClass::testClientReceiveInformation(){
     auto connection = new ClientConnection;
 
@@ -138,6 +171,9 @@ int InitProgram::start(int argc, char *argv[]) {
     return;
 }
 
+/**
+     * @brief Check if the client is able to send the information in json. Send the information to the client.
+     */
 [[maybe_unused]]  void TesterClass::testServerSendsInformation(){
     auto connection = new ServerConnection;
 
