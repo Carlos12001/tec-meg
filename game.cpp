@@ -13,10 +13,17 @@
 #include <fstream>
 using json = nlohmann::json;
 
+/**
+    * @brief The constructor of the class.
+    * @param numberCards Receive the number of cards to create.
+    */
 MatrixMemory::MatrixMemory(int numberCards) : sizeJ (numberCards / 10){
     initMatrix();
 }
 
+/**
+     * @brief Initalize the matrix. Create the cards and their images store in disk and 30% in ram.
+     */
 void MatrixMemory::initMatrix() {
     list<string> images;
     list<Card> allCards;
@@ -39,6 +46,11 @@ void MatrixMemory::initMatrix() {
     getMemoryState();
 }
 
+/**
+     * @brief Mix the element of a list. The recibe a list and mix its elements.
+     * @tparam T Type of elements in the list.
+     * @param listTemp The list to mix.
+     */
 template<class T> void MatrixMemory::mixElementsList(list<T> &listTemp) {
     mt19937 gen( chrono::system_clock::now().time_since_epoch().count() );
     vector<T> V(listTemp.begin(), listTemp.end() );
@@ -46,6 +58,11 @@ template<class T> void MatrixMemory::mixElementsList(list<T> &listTemp) {
     listTemp.assign(V.begin(), V.end() );
 }
 
+/**
+     * @brief Save all the cards in disk.
+     * @param images The list of all images.
+     * @param allCards The list of all cards.
+     */
 void MatrixMemory::firstSaveInDisk(list<string>& images, list<Card>& allCards) {
     json dataDisk;
     _List_const_iterator<Card> card = allCards.begin();
@@ -66,6 +83,10 @@ void MatrixMemory::firstSaveInDisk(list<string>& images, list<Card>& allCards) {
     file.close();
 }
 
+/**
+     * @brief This search the card in the file json. Do the search in file and when find the card charge it in the program.
+     * @return The card searched.
+     */
 Card* MatrixMemory::getCardFromDisk(string id) {
     ifstream file("data.json", std::ifstream::in);
     json dataDisk;
@@ -95,6 +116,9 @@ Card* MatrixMemory::getCardFromDisk(string id) {
     return foundCard;
 }
 
+/**
+     * @brief Initalize the ram. Set firts 30% of the cards in memory.
+     */
 void MatrixMemory::initRam() {
     int counter = 0;
     for (int i = 0; i < sizeI ; ++i) {
@@ -108,6 +132,10 @@ void MatrixMemory::initRam() {
     }
 }
 
+/**
+     * @brief Prints in console the state of ram.
+     * @return Return the state.
+     */
 string MatrixMemory::getMemoryState() {
     string result;
     cout << "The state of the ram is: " << endl;
@@ -118,6 +146,10 @@ string MatrixMemory::getMemoryState() {
     return result;
 }
 
+/**
+     * @brief Choose a card to replace. This is the algorithm to choose the page to replacd.
+     * @return The card choosed.
+     */
 Card* MatrixMemory::replaceCard() {
     Card* resultCard = nullptr;
     list<string> idCards;
@@ -131,6 +163,11 @@ Card* MatrixMemory::replaceCard() {
     return resultCard;
 }
 
+/**
+     * * @brief This is like a MMU. This MMU search the card in ram, and is not there do a page fault and searched in disk.
+     * @param id The ID of the card to search.
+     * @return The card searched.
+     */
 Card* MatrixMemory::getCard(string id) {
     Card* resultCard = nullptr;
     auto iterator = ram.find(id);
@@ -155,10 +192,18 @@ Card* MatrixMemory::getCard(string id) {
     return resultCard;
 }
 
+/**
+    * * @brief Call getCard(string id). Is to use that method without the id.
+    * @param id The ID of the card to search.
+    * @return The card searched.
+    */
 Card *MatrixMemory::getCard(int positionI, int positionJ) {
     return getCard(string("cardI") + to_string(positionI) + string("J") + to_string(positionJ));
 }
 
+/**
+     * @brief The constructor of the game.
+     */
 Game::Game(){
     Player* player1 = new Player;
     player1->name = "Player 1";
@@ -168,6 +213,11 @@ Game::Game(){
     players[1] = player2;
 }
 
+/**
+     * @brief Update the state of the game.
+     * @param pointP1 The points of the player 1.
+     * @param pointsP2 The points of the player 2.
+     */
 void Game::updateGame(int pointP1, int pointsP2) {
     players[0]->points+=pointP1;
     players[1]->points+=pointsP2;
