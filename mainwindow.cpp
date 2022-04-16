@@ -286,6 +286,9 @@ void MainWindow::changeTurn(){
     }
 }
 
+/**
+* @brief Show the event fi the cards selects was in memory.
+*/
 void MainWindow::showInMemory(){
     if(inMemory){
         showPoints(5);
@@ -296,12 +299,20 @@ void MainWindow::showInMemory(){
         ui->labelInMemory->setStyleSheet("#labelInMemory{ \n color: rgb(255, 255, 255); \n background-color: rgb(246, 97, 81); \n }");
     }
 }
+
+/**
+* @brief Choose a random extraPoints Event;
+*/
 void MainWindow::extraPoints(){
     string extraPointsTypes[] = {"None", "Double Points", "+100 Points", "-100 Points Opponent"};
     int choose = rand() % 4;
     showExtraPoints(extraPointsTypes[choose]);
 }
 
+/**
+* @brief Show the extra point event selected.
+* @param type The of the extra point selected.
+*/
 void MainWindow::showExtraPoints(string type){
    if(type=="None"){
        ui->labelExtraPointsImage->setStyleSheet("#labelExtraPointsImage{\n border-image: url(:/images/extraPoints0.png) 0 0 0 0 stretch stretch;\n}");

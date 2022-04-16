@@ -114,6 +114,9 @@ private:
      */
     ClientConnection connection  = ClientConnection();
 
+    /**
+     * @brief Counter if the last plays was correct.
+     */
     int succesfull = 0;
 
 public slots:
@@ -196,10 +199,20 @@ private slots:
      */
     void changeTurn();
 
+    /**
+     * @brief Show the event fi the cards selects was in memory.
+     */
     void showInMemory();
 
+    /**
+     * @brief Choose a random extraPoints Event;
+     */
     void extraPoints ();
 
+    /**
+     * @brief Show the extra point event selected.
+     * @param type The of the extra point selected.
+     */
     void showExtraPoints(string type);
 
 private:
