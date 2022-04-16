@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 }
 
 MainWindow::~MainWindow(){
+    sendIdCard("FINISH");
     delete ui;
 }
 
@@ -67,6 +68,7 @@ void MainWindow::defineFinalResult() {
     messageBox.setEscapeButton(QMessageBox::No);
 
     if (unCompleteCouple == 0){
+        sendIdCard("FINISH");
         timer->stop();
         QString winnerName;
         QString winnerPoints;
@@ -87,8 +89,8 @@ void MainWindow::defineFinalResult() {
             QCoreApplication::quit();
         }
     }
-    else{
-        if (time.toString()=="00:00:00"){
+    else if (time.toString()=="00:00:00"){
+            sendIdCard("FINISH");
             timer->stop();
             ui->frameMatriz->setEnabled(false);
             messageBox.setText("Perdieron ;(");
@@ -96,7 +98,6 @@ void MainWindow::defineFinalResult() {
                 QCoreApplication::quit();
             }
         }
-    }
 }
 
 void MainWindow::showCard() {
@@ -201,10 +202,18 @@ void MainWindow::showPoints(int addPoints) {
 }
 
 string MainWindow::receiveCard() {
-    return "5.png";
+    string data = connection.getMessage();
+    json jsonCard;
+    jsonCard= json::parse(data);
+    string image = jsonCard["image"];
+    inMemory = jsonCard["inMemory"];
+    return image;
 }
 
 void MainWindow::sendIdCard(string idCard) {
+    json jsonIDCard;
+    jsonIDCard = {{"id", idCard}};
+    connection.sendMessage(jsonIDCard.dump(4));
     return;
 }
 

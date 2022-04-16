@@ -49,8 +49,6 @@ private:
 
     Card* replaceCard();
 
-    Card* getCard(string id);
-
     Card* getCardFromDisk(string id);
 
     void initRam();
@@ -58,6 +56,8 @@ private:
 public:
 
     MatrixMemory(int numberCards);
+
+    Card* getCard(string id);
 
     Card* getCard(int positionI, int positionJ);
 

@@ -50,6 +50,8 @@ private:
 
     bool inGame = false;
 
+    bool inMemory = false;
+
     QPushButton* previousCard;
 
     QPushButton* actualCard;

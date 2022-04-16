@@ -103,7 +103,6 @@ void MatrixMemory::initRam() {
             else counter++;
             string id = string("cardI") + to_string(i) + string("J") + to_string(j);
             auto card = getCardFromDisk(id);
-            card->inMemory = true;
             ram[id] = card;
         }
     }
@@ -149,6 +148,7 @@ Card* MatrixMemory::getCard(string id) {
         ram[id] = replacementCard;
         iterator = ram.find(id);
         iterator->second->inMemory = true;
+        getMemoryState();
     }
     resultCard = iterator->second;
     resultCard->inMemory = !(resultCard->inMemory);
