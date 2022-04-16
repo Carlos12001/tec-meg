@@ -16,7 +16,11 @@ using namespace std;
 
 class InitProgram {
 public:
-    [[maybe_unused]] static int start(int argc, char *argv[]);
+    static int start(int argc, char *argv[]);
+
+};
+
+class TesterClass{
 
     [[maybe_unused]] static void testConnection();
 

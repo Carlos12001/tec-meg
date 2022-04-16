@@ -12,7 +12,7 @@ using namespace std;
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
-[[maybe_unused]] int InitProgram::start(int argc, char *argv[]) {
+int InitProgram::start(int argc, char *argv[]) {
 
     cout << "Welcome to testConnection" << endl;
     cout << " \"0\" for server or any number for client" << endl;
@@ -38,20 +38,20 @@ using json = nlohmann::json;
     }
 }
 
-[[maybe_unused]] void InitProgram::testConnection() {
+[[maybe_unused]] void TesterClass::testConnection() {
     cout << "Welcome to testConnection" << endl;
     cout << " \"0\" for server or any number for client" << endl;
     int inputNumber = Utilities::inputStringToInt();
     if (inputNumber == 0) {
         cout << "Test Server" << endl;
-        InitProgram::testServerConnection();
+        TesterClass::testServerConnection();
     } else {
         cout << "Test Client" << endl;
-        InitProgram::testClientConnection();
+        TesterClass::testClientConnection();
     }
 }
 
-[[maybe_unused]]  void InitProgram::testServerConnection() {
+[[maybe_unused]]  void TesterClass::testServerConnection() {
     auto connection = new ServerConnection;
 
     cout << "Please enter a number for the port: " << endl;
@@ -68,7 +68,7 @@ using json = nlohmann::json;
     return;
 }
 
-[[maybe_unused]]  void InitProgram::testClientConnection(){
+[[maybe_unused]]  void TesterClass::testClientConnection(){
     auto connection = new ClientConnection;
 
     cout << "Please enter a number for the port: " << endl;
@@ -86,7 +86,7 @@ using json = nlohmann::json;
     return;
 }
 
-[[maybe_unused]]  int InitProgram::initGUITest(int argc, char *argv[]){
+[[maybe_unused]]  int TesterClass::initGUITest(int argc, char *argv[]){
     QApplication app =  QApplication(argc, argv);
     MainWindow w;
     cout << "Please enter a number for the port: " << endl;
@@ -96,31 +96,31 @@ using json = nlohmann::json;
     return app.exec();
 }
 
-[[maybe_unused]]  void InitProgram::matrixMemoryTest1(){
+[[maybe_unused]]  void TesterClass::matrixMemoryTest1(){
     auto matrix = MatrixMemory(42);
 }
 
-[[maybe_unused]] void InitProgram::matrixMemoryTest2(){
+[[maybe_unused]] void TesterClass::matrixMemoryTest2(){
     auto matrix = MatrixMemory(20);
     matrix.getCard(0,0);
     matrix.getCard(8, 1);
     matrix.getMemoryState();
 }
 
-[[maybe_unused]] void InitProgram::testReceiveInformation() {
+[[maybe_unused]] void TesterClass::testReceiveInformation() {
     cout << "Welcome to testConnection" << endl;
     cout << " \"0\" for server or any number for client" << endl;
     int inputNumber = Utilities::inputStringToInt();
     if (inputNumber == 0) {
         cout << "Test Server" << endl;
-        InitProgram::testServerSendsInformation();
+        TesterClass::testServerSendsInformation();
     } else {
         cout << "Test Client" << endl;
-        InitProgram::testClientReceiveInformation();
+        TesterClass::testClientReceiveInformation();
     }
 }
 
-[[maybe_unused]]  void InitProgram::testClientReceiveInformation(){
+[[maybe_unused]]  void TesterClass::testClientReceiveInformation(){
     auto connection = new ClientConnection;
 
     cout << "Please enter a number for the port: " << endl;
@@ -138,7 +138,7 @@ using json = nlohmann::json;
     return;
 }
 
-[[maybe_unused]]  void InitProgram::testServerSendsInformation(){
+[[maybe_unused]]  void TesterClass::testServerSendsInformation(){
     auto connection = new ServerConnection;
 
     cout << "Please enter a number for the port: " << endl;
