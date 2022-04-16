@@ -2,23 +2,44 @@
 
 #include "connection.h"
 
-
+/**
+     *
+     * @brief The constructor of the class.
+     * @param type Decide the type of the connection.
+     */
 Connection::Connection(TypeConnection type) : type(type) {}
 
+/**
+     * @brief Print it was a an error.
+     * @param message The message to print.
+     */
 void Connection::error(const string& message) {
     perror(message.c_str());
 }
 
+/**
+     * @brief Close all the connections.
+     */
 Connection::~Connection() {
     close( socketOutput);
 }
 
+/**
+     * @brief Set of the param portNumber.
+     * @param number The number.
+     */
 void Connection::setPortNumber(const int number) {
      portNumber = number;
 }
 
+/**
+    * @brief Implents the method of Connection like a server.
+    */
 ServerConnection::ServerConnection() : Connection(TypeConnection::SERVER) {}
 
+/**
+    * @brief Implents the method of Connection like a server.
+    */
 void ServerConnection::initConnection() {
     if( inited) {
          error("The socket was previous initialed");
@@ -57,6 +78,10 @@ void ServerConnection::initConnection() {
     return;
 }
 
+/**
+    * @brief Implents the method of Connection like a server.
+     * @return The message recieve.
+    */
 string ServerConnection::getMessage() {
     int n = 256;
     char buffer[n];
@@ -66,6 +91,10 @@ string ServerConnection::getMessage() {
     return string (buffer);
 }
 
+/**
+    * @brief Implents the method of Connection like a server.
+     * @param message The message to send.
+    */
 void ServerConnection::sendMessage(string message) {
     int n = message.length() + 1;
     char buffer[n];
@@ -76,13 +105,22 @@ void ServerConnection::sendMessage(string message) {
     return;
 }
 
+/**
+     * @brief Implents the method of Connection like a server.
+     */
 ServerConnection::~ServerConnection() {
     close( newSocketOutput);
 }
 
+/**
+     * @brief Implents the method of Connection like a client.
+     */
 ClientConnection::ClientConnection() : Connection(TypeConnection::CLIENT) {
 }
 
+/**
+    * @brief Implents the method of Connection like a client.
+    */
 void ClientConnection::initConnection() {
     if( inited) {
          error("The socket was previous initialed");
@@ -114,6 +152,10 @@ void ClientConnection::initConnection() {
     return;
 }
 
+/**
+    * @brief Implents the method of Connection like a client.
+     * @return The message recieve.
+    */
 string ClientConnection::getMessage() {
     int n = 256;
     char buffer[n];
@@ -124,6 +166,10 @@ string ClientConnection::getMessage() {
     return string (buffer);
 }
 
+/**
+    * @brief Implents the method of Connection like a client.
+     * @param message The message to send.
+    */
 void ClientConnection::sendMessage(string message) {
     int n = message.length() + 1;
     char buffer[n];
