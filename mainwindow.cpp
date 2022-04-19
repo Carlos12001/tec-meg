@@ -8,6 +8,8 @@
 #include <QFrame>
 #include <QString>
 #include <nlohmann/json.hpp>
+#include <QRandomGenerator>
+using namespace std;
 using json = nlohmann::json;
 
 /**
@@ -45,15 +47,11 @@ void MainWindow::initGame(int numberPort) {
 
 
     inGame = false;
-
-    //Player 1
-    pointsPlayer1 = 0;
-    ui->labelPointsP1->setText(QString::fromStdString("Points Player 1: ") + QString::number(pointsPlayer1));
-    ui->labelPointsP1->setStyleSheet("#labelPointsP1{ \n color: rgb(255, 255, 255); \n background-color: rgb(38, 162, 105); \n }");
-
-    //Player 2
-    pointsPlayer1 = 0;
-    ui->labelPointsP1->setText(QString::fromStdString("Points Player 2: ") + QString::number(pointsPlayer1));
+    uniform_int_distribution<int>distribution(0,1);
+    int randomNum = distribution(*QRandomGenerator::global());
+    playerOne = randomNum == 1;
+    showPoints(0);
+    changeTurn();
 
     time.setHMS(0, 5, 0);
     ui->labelTimer->setText(time.toString("m::ss"));
@@ -147,6 +145,9 @@ void MainWindow::defineMiddleResult() {
         succesfull = 0;
     }
     inMemory = false;
+    json jsonIDCard;
+    jsonIDCard = {{"id", "None"},{"playerPoints1", pointsPlayer1}, {"playerPoints2", pointsPlayer2}};
+    connection.sendMessage(jsonIDCard.dump(4));
 }
 
 /**
@@ -240,7 +241,7 @@ string MainWindow::receiveCard() {
      */
 void MainWindow::sendIdCard(string idCard) {
     json jsonIDCard;
-    jsonIDCard = {{"id", idCard}};
+    jsonIDCard = {{"id", idCard}, {"playerPoints1", pointsPlayer1}, {"playerPoints2", pointsPlayer2}};
     connection.sendMessage(jsonIDCard.dump(4));
     return;
 }

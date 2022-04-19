@@ -5,6 +5,8 @@
 #include "server.h"
 #include "math.h"
 #include <nlohmann/json.hpp>
+#include "iostream"
+using namespace std;
 using json = nlohmann::json;
 
 /**
@@ -15,8 +17,16 @@ void Server::updateState() {
         string idCard = receiveCard();
         if("FINISH"==idCard)
             break;
-        game->updateGame(0,0);
-        sendIdCard(idCard);
+        else if ("None"==idCard){
+            cout << "\n----------Game State----------\n";
+            cout << "Player 1 Points: " << game->players[0]->points << endl;
+            cout << "Player 2 Points: " << game->players[1]->points << endl;
+//            matrixMemory->refreshRam();
+            matrixMemory->getMemoryState();
+        }
+        else{
+            sendIdCard(idCard);
+        }
     }
     cout << "\n\n\n--------------------" << "The final state of the ram is: " << "--------------------" << endl;
     matrixMemory->getMemoryState();
@@ -86,5 +96,10 @@ string Server::receiveCard() {
     json jsonIDCard;
     jsonIDCard = json::parse(data);
     string idCard = jsonIDCard["id"];
+    if ("None"==idCard){
+        int p1 = jsonIDCard["playerPoints1"];
+        int p2 = jsonIDCard["playerPoints2"];
+        game->updateGame(p1*100,p2*100);
+    }
     return idCard;
 }

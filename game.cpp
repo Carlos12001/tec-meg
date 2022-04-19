@@ -219,6 +219,6 @@ Game::Game(){
      * @param pointsP2 The points of the player 2.
      */
 void Game::updateGame(int pointP1, int pointsP2) {
-    players[0]->points+=pointP1;
-    players[1]->points+=pointsP2;
+    players[0]->points=pointP1;
+    players[1]->points=pointsP2;
 }
