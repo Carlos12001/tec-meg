@@ -22,7 +22,6 @@ void Server::updateState() {
             cout << "Player 1 Points: " << game->players[0]->points << endl;
             cout << "Player 2 Points: " << game->players[1]->points << endl;
 //            matrixMemory->refreshRam();
-            matrixMemory->getMemoryState();
         }
         else{
             sendIdCard(idCard);

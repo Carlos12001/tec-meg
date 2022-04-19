@@ -142,6 +142,10 @@ public:
      */
     string getMemoryState();
 
+    /**
+     * @brief Update all the cards in Ram. The cards will be delte from ram
+     */
+    void refreshRam();
 };
 
 /**

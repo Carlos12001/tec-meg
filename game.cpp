@@ -133,6 +133,46 @@ void MatrixMemory::initRam() {
 }
 
 /**
+ * @brief Update all the cards in Ram. The cards will be delte from ram
+ */
+void MatrixMemory::refreshRam(){
+    list<int> randomNumbersI;
+    list<int> randomNumbersJ;
+    list<string> usedID;
+    for (int i = 0; i < sizeI ; ++i) randomNumbersI.push_back(i);
+    for (int j = 0; j < sizeJ ; ++j) randomNumbersI.push_back(j);
+    mixElementsList(randomNumbersI);
+    mixElementsList(randomNumbersJ);
+    std::list<std::string>::iterator it;
+    auto iterRam = ram.begin();
+    while (iterRam != ram.end()) {
+        int i = *randomNumbersI.begin();
+        int j = *randomNumbersJ.begin();
+        string id = string("cardI") + to_string(i) + string("J") + to_string(j);
+        it = std::find(usedID.begin(), usedID.end(), id);
+        if(it != usedID.end()){
+            continue;
+        }
+        else{
+            usedID.push_back(id);
+            auto deleteCard = ram[id];
+            auto replacementCard = getCardFromDisk(id);
+
+            auto iterDelete = ram.find(deleteCard->id);
+            delete iterDelete->second;
+            ram.erase(iterDelete);
+            ram[id] = replacementCard;
+            iterRam = ram.find(id);
+            mixElementsList(randomNumbersI);
+            mixElementsList(randomNumbersJ);
+            ++iterRam;
+        }
+    }
+    getMemoryState();
+}
+
+
+/**
      * @brief Prints in console the state of ram.
      * @return Return the state.
      */
