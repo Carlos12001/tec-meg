@@ -34,6 +34,7 @@ public:
  * @brief Test the methods. It performs tests on the client GUI, the connection and the memory array.
  */
 class TesterClass{
+public:
 
     /**
      * @brief Receives user input and executes the client or server. It first waits for the type of connection and then asks for the port.
