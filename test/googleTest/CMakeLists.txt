@@ -7,11 +7,8 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 enable_testing()
 
 
-file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.h *.cpp)
 
-set(SOURCES ${TEST_SOURCES})
-
-add_executable(${BINARY} ${TEST_SOURCES} main_tester.cpp)
+add_executable(${BINARY} main_tester.cpp game.cpp game.h connection.cpp connection.h tester.cpp)
 
 add_test(NAME ${BINARY} COMMAND ${BINARY})
 
