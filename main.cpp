@@ -7,6 +7,6 @@
  * @return Status of the program if it was executed successfully.
  */
 int main(int argc, char *argv[]){
-    InitProgram::start(argc, argv);
+//    InitProgram::start(argc, argv);
     return 0;
 }

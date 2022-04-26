@@ -1,6 +1,5 @@
 #My ignore
 build/
-test/
 bin/
 # Created by https://www.toptal.com/developers/gitignore/api/linux,clion,visualstudiocode,c++,cmake,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,clion,visualstudiocode,c++,cmake,windows

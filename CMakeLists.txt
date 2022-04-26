@@ -58,3 +58,5 @@ set_target_properties(tec-meg PROPERTIES
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(tec-meg)
 endif()
+
+add_subdirectory(test/googleTest)
