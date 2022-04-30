@@ -30,3 +30,4 @@ sudo pacman -S gtest
 ## Homework 2 - Unit Testing
 - [ [google test in clion (video)] ](https://www.youtube.com/watch?v=8Up5eNZ0FLw)
 - [ [google oficial documentation] ](https://google.github.io/googletest/primer.html)
+- [ [google test and cmake] ](https://raymii.org/s/tutorials/Cpp_project_setup_with_cmake_and_unit_tests.html)
